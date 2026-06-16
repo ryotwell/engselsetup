@@ -1,0 +1,440 @@
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "dnsLog": false,
+    "error": "/var/log/xray/error.log",
+    "loglevel": "info",
+    "maskAddress": ""
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "ip": [
+          "geoip:private"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ]
+      }
+    ]
+  },
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1",
+      "8.8.8.8",
+      "8.8.4.4",
+      "185.228.168.10",
+      "185.228.168.11",
+      "94.140.14.14",
+      "94.140.15.15",
+      "9.9.9.9",
+      "149.112.112.112",
+      "77.88.8.8",
+      "77.88.8.1",
+      "208.67.222.222",
+      "208.67.220.220",
+      "185.51.200.2",
+      "185.51.200.3",
+      "176.103.130.130",
+      "176.103.130.131",
+      "213.73.91.35",
+      "213.251.188.177"
+    ],
+    "tag": "dns-in"
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "tunnel",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "streamSettings": null,
+      "tag": "api",
+      "sniffing": null
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1001,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "xxxxxx"
+#trojan
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "heartbeatPeriod": 0,
+          "host": "",
+          "path": "/trojan"
+        }
+      },
+      "tag": "inbound-127.0.0.1:1001",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1002,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "xxxxxx"
+#trojan
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "httpupgradeSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "host": "",
+          "path": "/htrojan"
+        },
+        "network": "httpupgrade",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:1002",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1003,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "xxxxxx"
+#trojangrpc
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "trojan-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:1003",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2001,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+#vmess
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "heartbeatPeriod": 0,
+          "host": "",
+          "path": "/vmess"
+        }
+      },
+      "tag": "inbound-127.0.0.1:2001",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2002,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+#vmess
+          }
+        ]
+      },
+      "streamSettings": {
+        "httpupgradeSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "host": "",
+          "path": "/hvmess"
+        },
+        "network": "httpupgrade",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:2002"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2003,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+#vmessgrpc
+          }
+        ]
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "vmess-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:2003"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+#vless
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/vless"
+        }
+      },
+      "tag": "inbound-127.0.0.1:3001"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+#vless
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "httpupgrade",
+        "security": "none",
+        "httpupgradeSettings": {
+          "path": "/hvless"
+        }
+      },
+      "tag": "inbound-127.0.0.1:3002"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3003,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+#vlessgrpc
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "vless-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:3003"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1004,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "xxxxxx"
+#trojan
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xtrojan",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:1004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2004,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+#vmess
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xvmess",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:2004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3004,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+#vless
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xvless",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:3004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}
+    }
+  ]
+}

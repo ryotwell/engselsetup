@@ -5,7 +5,7 @@ set -euo pipefail
 # ==========================================
 # Config
 # ==========================================
-DOMAIN="sg2.engsel.qzz.io"
+DOMAIN="id.engsel.qzz.io,bahlilclash.engsel.qzz.io"
 SWAP_SIZE="3G"
 NOFILE_LIMIT=1048576
 
@@ -106,7 +106,12 @@ log "Mengkonfigurasi Nginx untuk domain: ${DOMAIN}..."
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak 2>/dev/null || true
 cp nginx.conf /etc/nginx/nginx.conf
 
-sed -i "s/xxxxxx/${DOMAIN}/g" engsel.conf
+# Parse domain: comma-separated → first domain & space-separated list
+FIRST_DOMAIN="${DOMAIN%%,*}"
+DOMAIN_LIST="${DOMAIN//,/ }"
+
+sed -i "s/DOMAIN_CERT/${FIRST_DOMAIN}/g" engsel.conf
+sed -i "s/DOMAIN_LIST/${DOMAIN_LIST}/g" engsel.conf
 cp engsel.conf /etc/nginx/conf.d/engsel.conf
 
 log "Menguji konfigurasi Nginx..."
