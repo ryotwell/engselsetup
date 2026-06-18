@@ -5,7 +5,7 @@ set -euo pipefail
 # ==========================================
 # Config
 # ==========================================
-DOMAIN="id.engsel.qzz.io,bahlilclash.engsel.qzz.io"
+DOMAIN="id2.engsel.qzz.io"
 SWAP_SIZE="3G"
 NOFILE_LIMIT=1048576
 
@@ -121,3 +121,16 @@ log "Merestart Nginx..."
 systemctl restart nginx
 
 log "Setup selesai!"
+
+# curl https://get.acme.sh | sh
+# ~/.acme.sh/acme.sh --issue -d id.engsel.qzz.io --standalone -k ec-256
+# ~/.acme.sh/acme.sh --installcert -d id.engsel.qzz.io --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+
+# # Berikan akses baca ke file sertifikat
+# chmod 644 /etc/xray/xray.crt
+# chmod 644 /etc/xray/xray.key
+
+# # Restart service yang menggunakan sertifikat tersebut (pilih salah satu)
+# systemctl restart xray
+# # ATAU
+# systemctl restart nginx
